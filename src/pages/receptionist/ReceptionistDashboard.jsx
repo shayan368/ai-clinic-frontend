@@ -339,12 +339,12 @@ export default function ReceptionistDashboard() {
 
   // ── Name helpers — works for both sources ──
   const getPatientName = (patientId) => {
-    const id = parseInt(patientId);
+    const id = String(patientId);
 
     // Check patients state (unified list)
     const p = patients.find(
-      (p) => parseInt(p.id) === id ||
-             parseInt(p.userId) === id ||
+      (p) => String(p.id) === id ||
+             String(p.userId) === id ||
              p.id === `user_${patientId}`
     );
     if (p) return p.name;
@@ -353,16 +353,16 @@ export default function ReceptionistDashboard() {
   };
 
   const getDoctorName = (doctorId) => {
-    const id = parseInt(doctorId);
-    const d  = doctors.find((d) => parseInt(d.id) === id);
+    const id = String(doctorId);
+    const d  = doctors.find((d) => String(d.id) === id);
     return d
       ? `Dr. ${d.firstName} ${d.lastName}`
       : `Doctor #${doctorId}`;
   };
 
   const getDoctorSpec = (doctorId) => {
-    const id = parseInt(doctorId);
-    const d  = doctors.find((d) => parseInt(d.id) === id);
+    const id = String(doctorId);
+    const d  = doctors.find((d) => String(d.id) === id);
     return d?.specialization || "General Practice";
   };
 
@@ -609,11 +609,11 @@ function BookAppointmentModal({ patients, doctors, onClose, onSaved }) {
         (p) => String(p.id) === String(form.patientId)
       );
       const actualPatientId = selectedPatient?.userId ||
-        parseInt(form.patientId);
+        form.patientId;
 
       const res = await appointmentAPI.create({
         patientId: actualPatientId,
-        doctorId:  parseInt(form.doctorId),
+        doctorId:  form.doctorId,
         date:      finalDateTime.toISOString(),
         reason:    form.reason.trim(),
         symptoms:  form.symptoms.trim(),
@@ -1217,7 +1217,7 @@ function AppointmentsTab({
     const matchStatus = statusFilter === "all" ||
       a.status === statusFilter;
     const matchDoctor = doctorFilter === "all" ||
-      parseInt(a.doctorId) === parseInt(doctorFilter);
+      String(a.doctorId) === String(doctorFilter);
     const matchDate   = !dateFilter || (() => {
       const d = new Date(a.date); d.setHours(0,0,0,0);
       const f = new Date(dateFilter); f.setHours(0,0,0,0);
@@ -1833,7 +1833,7 @@ function PatientsTab({
     // Match using userId (for app users) or id (for manual)
     const targetId = patient.userId || patient.id;
     return appointments.filter(
-      (a) => parseInt(a.patientId) === parseInt(targetId)
+      (a) => String(a.patientId) === String(targetId)
     ).length;
   };
 
@@ -1842,7 +1842,7 @@ function PatientsTab({
     const appts    = appointments
       .filter(
         (a) =>
-          parseInt(a.patientId) === parseInt(targetId) &&
+          String(a.patientId) === String(targetId) &&
           a.status === "completed"
       )
       .sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -2253,11 +2253,11 @@ function PatientFormModal({ editData, onClose, onSaved }) {
       (p) => String(p.id) === String(form.patientId)
     );
     const actualPatientId = selectedPatient?.userId ||
-      parseInt(form.patientId);
+      form.patientId;
 
     const res = await appointmentAPI.create({
       patientId: actualPatientId,
-      doctorId:  parseInt(form.doctorId),
+      doctorId:  form.doctorId,
       date:      finalDateTime.toISOString(),
       reason:    form.reason.trim(),
       symptoms:  form.symptoms.trim(),

@@ -584,14 +584,14 @@ function AppointmentModal({ editData, patients, doctors, onClose, onSaved }) {
       if (isEdit) {
         res = await appointmentAPI.update(editData.id, {
           ...form,
-          patientId: parseInt(form.patientId),
-          doctorId:  parseInt(form.doctorId),
+          patientId: form.patientId,
+          doctorId:  form.doctorId,
         });
       } else {
         res = await appointmentAPI.create({
           ...form,
-          patientId: parseInt(form.patientId),
-          doctorId:  parseInt(form.doctorId),
+          patientId: form.patientId,
+          doctorId:  form.doctorId,
         });
       }
       onSaved(res.data.data, isEdit);

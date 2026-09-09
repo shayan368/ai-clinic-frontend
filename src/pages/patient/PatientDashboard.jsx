@@ -1439,7 +1439,7 @@ function ProfileInfoTab({ user, updateUser }) {
         const all  = res.data.data || [];
         // Find record linked to this user
         const mine = all.find(
-          (p) => parseInt(p.userId) === parseInt(user.id) ||
+          (p) => String(p.userId) === String(user.id) ||
                  p.email?.toLowerCase() === user.email?.toLowerCase()
         );
         if (mine) {

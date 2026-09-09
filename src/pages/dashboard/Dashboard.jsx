@@ -162,15 +162,15 @@ useEffect(() => {
   }, []);
   // Add these helpers inside Dashboard component:
 const getPatientNameForDash = (patientId) => {
-  const id = parseInt(patientId);
+  const id = String(patientId);
 
   // Check Patients table records
-  const p = allPatients.find((p) => parseInt(p.id) === id);
+  const p = allPatients.find((p) => String(p.id) === id);
   if (p) return p.name;
 
   // Check appointment enriched data
   const appt = appointments.find(
-    (a) => parseInt(a.patientId) === id
+    (a) => String(a.patientId) === id
   );
   if (appt?.patientName) return appt.patientName;
 
@@ -178,8 +178,8 @@ const getPatientNameForDash = (patientId) => {
 };
 
 const getDoctorNameForDash = (doctorId) => {
-  const id = parseInt(doctorId);
-  const d  = allDoctors.find((d) => parseInt(d.id) === id);
+  const id = String(doctorId);
+  const d  = allDoctors.find((d) => String(d.id) === id);
   return d ? `Dr. ${d.firstName} ${d.lastName}` : `Doctor #${doctorId}`;
 };
 

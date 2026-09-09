@@ -580,8 +580,8 @@ function PrescriptionModal({ patients, doctors, currentUser,
     try {
       const res = await prescriptionAPI.create({
         ...form,
-        patientId: parseInt(form.patientId),
-        doctorId:  parseInt(form.doctorId),
+        patientId: form.patientId,
+        doctorId:  form.doctorId,
         medicines:  validMeds,
       });
       onSaved(res.data.data);

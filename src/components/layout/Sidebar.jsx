@@ -292,7 +292,7 @@ useEffect(() => {
       </nav>
 
       {/* ── Upgrade banner — non-admin free users ── */}
-      {!isPro && user?.role !== "admin" && user?.role !== "patient" && (
+      {!isPro && (user?.role === "doctor" || user?.role === "patient") && (
         <div style={{
           margin:       "0 12px 12px",
           padding:      "16px",

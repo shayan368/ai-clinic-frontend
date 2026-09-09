@@ -178,7 +178,7 @@ export default function Diagnosis() {
   // ── When patient is selected, auto-fill age/gender ──
   const handlePatientSelect = (e) => {
     const id      = e.target.value;
-    const patient = patients.find((p) => p.id === parseInt(id));
+    const patient = patients.find((p) => String(p.id) === String(id));
     setForm((prev) => ({
       ...prev,
       patientId: id,
@@ -210,7 +210,7 @@ export default function Diagnosis() {
         age:       parseInt(form.age),
         gender:    form.gender,
         history:   form.history,
-        patientId: form.patientId ? parseInt(form.patientId) : null,
+        patientId: form.patientId ? String(form.patientId) : null,
       });
       setResult(res.data.data);
       fetchLogs();

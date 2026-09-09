@@ -367,7 +367,7 @@ export default function DoctorDashboard() {
     setDiagLogs(
       Array.isArray(logsData)
         ? logsData.filter(
-            (l) => parseInt(l.doctorId) === parseInt(user.id)
+            (l) => String(l.doctorId) === String(user.id)
           )
         : []
     );
@@ -382,13 +382,13 @@ export default function DoctorDashboard() {
     // appointments now carry patientName directly so this is simple:
     const getPatientName = (patientId) => {
         const appt = appointments.find(
-            (a) => parseInt(a.patientId) === parseInt(patientId)
+            (a) => String(a.patientId) === String(patientId)
         );
         if (appt?.patientName) return appt.patientName;
 
         // fallback: check patients state
         const p = patients.find(
-            (p) => parseInt(p.id) === parseInt(patientId)
+            (p) => String(p.id) === String(patientId)
         );
         return p ? p.name : `Patient #${patientId}`;
     };
@@ -400,7 +400,7 @@ export default function DoctorDashboard() {
 
     // ── Replace getPatientName helper ──
     // const getPatientName = (patientId) => {
-    //     const id = parseInt(patientId);
+    //     const id = String(patientId);
     //     const p = patients.find((p) => p.id === id || p.id === patientId);
     //     return p ? p.name : `Patient #${patientId}`;
     // };
@@ -875,14 +875,14 @@ function PatientsTab({ patients, appointments, onTabChange, showToast }) {
 
     const getApptCount = (patientId) =>
         appointments.filter(
-            (a) => parseInt(a.patientId) === parseInt(patientId)
+            (a) => String(a.patientId) === String(patientId)
         ).length;
 
     const getLastVisit = (patientId) => {
         const appts = appointments
             .filter(
                 (a) =>
-                    parseInt(a.patientId) === parseInt(patientId) &&
+                    String(a.patientId) === String(patientId) &&
                     a.status === "completed"
             )
             .sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -1586,7 +1586,7 @@ function DiagnosisTab({ patients, diagLogs, setDiagLogs, user, showToast }) {
     const [success, setSuccess] = useState("");
 
     const patient = patients.find(
-        (p) => p.id === parseInt(selectedPatient)
+        (p) => String(p.id) === String(selectedPatient)
     );
 
     const handleGenerate = async (e) => {
@@ -1621,7 +1621,7 @@ function DiagnosisTab({ patients, diagLogs, setDiagLogs, user, showToast }) {
                 age: patient?.age || 30,
                 gender: patient?.gender || "unknown",
                 history: patient?.history || "",
-                patientId: parseInt(selectedPatient),
+                patientId: selectedPatient,
             });
 
             setResult(res.data.data);
@@ -2543,7 +2543,7 @@ function PrescriptionBuilder({ patients, user, onClose, onSaved }) {
         setError("");
         try {
             const res = await prescriptionAPI.create({
-                patientId: parseInt(form.patientId),
+                patientId: form.patientId,
                 doctorId: user.id,
                 medicines: validMeds,
                 instructions: form.instructions,

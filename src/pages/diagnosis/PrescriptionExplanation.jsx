@@ -49,7 +49,7 @@ export default function PrescriptionExplanation() {
         instructions,
         language,
         prescriptionId: prescriptionId
-          ? parseInt(prescriptionId) : null,
+          ? String(prescriptionId) : null,
       });
       setExplanation(res.data.data.explanation);
     } catch (err) {
